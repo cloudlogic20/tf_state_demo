@@ -7,8 +7,12 @@ resource "aws_db_instance" "default" {
   instance_class       = "db.t2.micro"
   name                 = "mydb"
   username             = "foo"
-  password             = file("${path.module}/confidential.txt")
+  password             = data.aws_ssm_parameter.dummyref.value
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = "true"
 }
 
+
+data "aws_ssm_parameter" "dummyref" {
+  name = "secretdemo"
+}
